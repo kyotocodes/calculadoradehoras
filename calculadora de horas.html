@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora de Horas - Streamers</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 400px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    input {
+      width: 90%;
+      padding: 8px;
+      margin: 6px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      margin: 8px 6px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      background: #007bff;
+      color: white;
+      transition: 0.3s;
+    }
+    button:hover {
+      opacity: 0.85;
+    }
+    #resultado {
+      margin-top: 20px;
+      padding: 12px;
+      background: #f0f8ff;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📊 Calculadora de Horas</h1>
+    
+    <input type="text" id="nome" placeholder="Nome do streamer" />
+    <input type="number" id="horas" placeholder="Horas" min="0" />
+    <input type="number" id="minutos" placeholder="Minutos" min="0" max="59" />
+    
+    <div>
+      <button onclick="contabilizar(1)">➕ Contabilizar</button>
+      <button onclick="contabilizar(-1)">➖ Subtrair</button>
+      <button onclick="resetar()">🔄 Adicionar / Resetar</button>
+    </div>
+    
+    <div id="resultado">Nenhum cálculo realizado ainda.</div>
+  </div>
+
+  <script>
+    let totalMinutos = 0;
+    let streamerAtual = "";
+
+    function contabilizar(fator) {
+      const nome = document.getElementById("nome").value.trim();
+      const horas = parseInt(document.getElementById("horas").value) || 0;
+      const minutos = parseInt(document.getElementById("minutos").value) || 0;
+
+      if (!nome) {
+        alert("Por favor, informe o nome do streamer!");
+        return;
+      }
+
+      // Atualiza streamer se for a primeira vez
+      if (streamerAtual === "" || streamerAtual !== nome) {
+        streamerAtual = nome;
+      }
+
+      const minutosTotais = (horas * 60 + minutos) * fator;
+      totalMinutos += minutosTotais;
+
+      atualizarResultado();
+    }
+
+    function atualizarResultado() {
+      const horas = Math.floor(totalMinutos / 60);
+      const minutos = totalMinutos % 60;
+      document.getElementById("resultado").innerText = 
+        `${streamerAtual} → ${horas}h ${minutos}min contabilizados.`;
+    }
+
+    function resetar() {
+      document.getElementById("nome").value = "";
+      document.getElementById("horas").value = "";
+      document.getElementById("minutos").value = "";
+      totalMinutos = 0;
+      streamerAtual = "";
+      document.getElementById("resultado").innerText = 
+        "Nenhum cálculo realizado ainda.";
+    }
+  </script>
+</body>
+</html>
